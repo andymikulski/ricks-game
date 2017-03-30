@@ -11,11 +11,16 @@ public class TrackPlayer : MonoBehaviour {
 	public AnimationCurve CameraMotion = AnimationCurve.Linear(0,0,1,1);
 
 	private Vector3 lastPosition;
+	public bool BeSmooth;
 
 	void LateUpdate () {
 		if (target != null) {
 			lastPosition = target.position - new Vector3 (xOffset, yOffset, zOffset);
-			transform.position = Vector3.Lerp (transform.position, lastPosition, CameraMotion.Evaluate (Time.deltaTime) * CameraSpeed);
+			if (BeSmooth) {
+				transform.position = Vector3.Lerp (transform.position, lastPosition, CameraMotion.Evaluate (Time.deltaTime) * CameraSpeed);
+			} else {
+				transform.position = lastPosition;
+			}
 		}
 	}
 

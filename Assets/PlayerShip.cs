@@ -13,7 +13,8 @@ public class PlayerShip : MonoBehaviour {
 	private Vector3 bgFgOffset;
 	private bool hasFollowButton = false;
 	private ParticleSystem engineBlast;
-
+	public AudioClip[] blastSounds;
+	private AudioSource engineAudio;
 
 	public void Start()
 	{
@@ -33,6 +34,7 @@ public class PlayerShip : MonoBehaviour {
 		bgCameraControls = bgCamera.GetComponent<MouseOrbitZoom> ();
 
 		engineBlast = GameObject.Find ("Dope Fire Trail").GetComponent<ParticleSystem>();
+		engineAudio = GetComponent<AudioSource>();
 
 		bgFgOffset = bgCamera.transform.position - Camera.main.transform.position;
 
@@ -113,14 +115,21 @@ public class PlayerShip : MonoBehaviour {
 		ShakeObject cameraShake = GameObject.Find ("CameraManager").GetComponent<ShakeObject> ();
 		cameraShake.smooth = false;
 		cameraShake.smoothAmount = 5f;
-		cameraShake.ShakeCamera (amount, 0.025f);
+
+		float clampedAmount = Mathf.Clamp (amount, 0.2f, 0.8f);
+		cameraShake.ShakeCamera (clampedAmount, clampedAmount * 0.05f);
 	}
 
 	public void BlastEngines()
 	{
-		//			engineBlast.Stop ();
-		//			float engineBlastDuration = engineBlast.main.duration;
-		//			engineBlastDuration = direction.magnitude;
+		// engineBlast.Stop ();
+		// float engineBlastDuration = engineBlast.main.duration;
+		// engineBlastDuration = direction.magnitude;
 		engineBlast.Play ();
+
+		if (blastSounds.Length > 0) {
+			engineAudio.clip = blastSounds [Random.Range (0, blastSounds.Length)];
+			engineAudio.Play ();
+		}
 	}
 }

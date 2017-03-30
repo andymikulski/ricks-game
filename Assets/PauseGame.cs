@@ -56,7 +56,7 @@ public class PauseGame : MonoBehaviour {
 			RenderSettings.fog = false;
 		}
 
-		if (HasMenu) {
+		if (IsPaused && HasMenu) {
 			GUI.Window (0, PauseMenu, RenderPauseMenu, "Pause Menu");
 		}
 	}
